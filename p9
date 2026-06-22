@@ -1,0 +1,34 @@
+%pip install pydantic wikipedia spacy
+
+import wikipedia, json, re
+from typing import Optional
+from pydantic import BaseModel
+
+class InstituteDetails(BaseModel):
+    name: str
+    founder: Optional[str] = None
+    founded_year: Optional[str] = None
+    branches: Optional[str] = None
+    number_of_employees: Optional[str] = None
+    summary: str
+
+def extract_details(name):
+    try:
+        summary = wikipedia.summary(name, sentences=6)
+        content = wikipedia.page(name).content
+        year_match = re.search(r"\b(18|19|20)\d{2}\b", content)
+
+        return InstituteDetails(
+            name=name,
+            founded_year=year_match.group() if year_match else "Not Found",
+            summary=summary
+        )
+
+    except Exception as e:
+        return InstituteDetails(
+            name=name,
+            summary=f"Error: {e}"
+        )
+
+name = input("Entre the institution name:")
+print(json.dumps(extract_details(name).model_dump(), indent=4))
