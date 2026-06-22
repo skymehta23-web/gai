@@ -1,0 +1,10 @@
+%pip install gensim
+import gensim.downloader as api
+
+model = api.load('word2vec-google-news-300')
+
+queen_vec = model['king'] - model['man'] + model['woman']
+print('king - man + woman:', model.similar_by_vector(queen_vec, topn=3))
+
+actor_vec = model['actor'] - model['man'] + model['woman']
+print('actor - man + woman:', model.similar_by_vector(actor_vec, topn=5))
