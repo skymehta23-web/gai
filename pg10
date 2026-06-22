@@ -1,0 +1,29 @@
+IPC = {
+    "302": "Section 302 IPC : Punishment for murder.",
+    "375": "Section 375 IPC : Definition of rape under Indian law.",
+    "420": "Section 420 IPC : Cheating and Dishonestly inducing delivery of property.",
+    "376": "Section 376 IPC : Punishment for rape.",
+    "124A": "Section 124A IPC : Sedition against the government"
+}
+
+print("IPC Chatbot: Ask me about an IPC section.")
+
+while True:
+    q = input("You: ")
+
+    if q.lower() in ["quit", "exit", "bye"]:
+        print("IPC Chatbot: Goodbye!")
+        break
+
+    found = False
+    for sec in IPC:
+        if sec.lower() in q.lower():
+            print("IPC Chatbot:", IPC[sec])
+            found = True
+            break
+
+    if not found:
+        if q.lower() in ["hi", "hello"]:
+            print("IPC Chatbot: Hello! Ask me about an IPC section.")
+        else:
+            print("IPC Chatbot: try asking about section 302, 375, 420, 376 or 124A.")
