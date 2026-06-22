@@ -1,0 +1,19 @@
+import gensim.downloader as api
+import random
+
+model = api.load('glove-wiki-gigaword-100')
+
+def create_paragraph(seed_word):
+    if seed_word not in model:
+        return f"'{seed_word}' not in vocabulary."
+    similar = [w for w, _ in model.most_similar(seed_word, topn=10)]
+    random.shuffle(similar)
+    sel = similar[:5]
+    para = (f"In a world defined by {seed_word}, "
+            f"people found themselves surrounded by concepts like {', '.join(sel[:-1])}, and {sel[-1]}. "
+            f"These ideas shaped the way they thought, acted, and dreamed. "
+            f"Every step forward in their journey reflected the essence of '{seed_word}', "
+            f"bringing them closer to understanding the true meaning of {sel[0]}.")
+    return para
+
+print(create_paragraph('freedom'))
