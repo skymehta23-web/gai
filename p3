@@ -1,0 +1,36 @@
+%pip install gensim scikit-learn matplotlib nltk 
+
+import nltk
+import matplotlib.pyplot as plt
+from nltk.tokenize import word_tokenize
+from gensim.models import Word2Vec
+from sklearn.decomposition import PCA
+
+nltk.download('punkt_tab')
+
+sentences = [
+    "Diabetes affects blood sugar",
+    "Hypertension causes heart problems",
+    "Pneumonia is treated with antibiotics",
+    "Insulin helps diabetes patients"
+]
+
+processed = [word_tokenize(s.lower()) for s in sentences]
+
+model = Word2Vec(processed, vector_size=50, window=2, min_count=1)
+
+words = model.wv.index_to_key
+vectors = [model.wv[word] for word in words]
+
+points = PCA(n_components=2).fit_transform(vectors)
+
+print("Vocabulary:", words)
+print("Similar words to diabetes:", model.wv.most_similar("diabetes"))
+
+for i, word in enumerate(words):
+    plt.scatter(points[i, 0], points[i, 1])
+    plt.text(points[i, 0], points[i, 1], word)
+
+plt.title("Word Embedding using PCA")
+plt.grid()
+plt.show()
